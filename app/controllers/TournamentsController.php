@@ -8,4 +8,9 @@ class TournamentsController extends BaseController {
 		exit;
 	}
 
+	public function postPlayer()
+	{
+		$input = Input::all();
+		var_dump($input);
+	}
 }

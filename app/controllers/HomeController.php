@@ -62,6 +62,10 @@ class HomeController extends BaseController {
 						return json_encode(array("error"=>array("Wrong Email / Password")));
 					}
 				}
+				else
+				{
+					return json_encode(array("error"=>array("Wrong Email / Password")));
+				}
 			}
 		}
 	}

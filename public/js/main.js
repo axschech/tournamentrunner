@@ -67,7 +67,7 @@ $(document).ready(function(){
 			{
 				if(data.error.length==1)
 				{
-					$('#login_alert').html(data[0]);
+					$('#login_alert').html(data.error[0]);
 				}
 				else if(data.error.length>1)
 				{

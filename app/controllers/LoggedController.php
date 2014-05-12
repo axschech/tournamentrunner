@@ -20,6 +20,8 @@ class LoggedController extends BaseController {
 				$tournaments[] = $item->toArray();
 			}
 
+			// $res = Player::where('user',$userid)->get();
+
 			return View::make('logged', array("user"=>$user,'tournaments'=>$tournaments));
 		}
 		else

@@ -12,19 +12,16 @@
 */
 
 // Route::controller('tournaments','TournamentsController');
+Route::post('logout',function(){
+	Session::flush();
+	return Redirect::to('/');
+});
+
 Route::controller('tournaments/{id}','TournamentsController');
 
 Route::controller('logged','LoggedController');
 
 Route::controller('/', 'HomeController');
-
-
-
-
-Route::post('logout',function(){
-	Session::flush();
-	return Redirect::to('/');
-});
 
 
 ?>
