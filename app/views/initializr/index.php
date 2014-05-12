@@ -55,17 +55,17 @@
       <div class="row">
           <div class="col-md-4">
             <h2>Sign in</h2>
-              <form class="form-horizontal" role="form" action="login" method="POST">
+              <form class="form-horizontal" id="login_form" role="form" action="login" method="POST">
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-md-3 control-label">Email</label>
+                  <label for="email" class="col-md-3 control-label">Email</label>
                   <div class="col-md-9">
-                    <input type="email" class="form-control" id="inputEmail3" name="email" placeholder="Email">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+                  <label for="password" class="col-md-3 control-label">Password</label>
                   <div class="col-md-9">
-                    <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Password">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                   </div>
                 </div>
                 <div class="form-group">
@@ -80,6 +80,7 @@
                 <div class="form-group">
                   <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-default">Sign in</button>
+                    <span id='login_alert' class="text-danger"></span>
                   </div>
                 </div>
               </form>
@@ -87,37 +88,30 @@
       
           <div class="col-md-4 col-md-offset-4">
                 <h2>Register</h2>
-                <form class="form-horizontal" role="form" action="login" method="POST">
+                <form class="form-horizontal" id="register_form" role="form" action="register" method="POST">
                 <div class="form-group">
-                  <label for="inputName" class="col-md-3 control-label">Name</label>
+                  <label for="name" class="col-md-3 control-label">Name</label>
                   <div class="col-md-9">
-                    <input type="text" class="form-control" id="inputName" name="name" placeholder="Email">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Email">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-md-3 control-label">Email</label>
+                  <label for="email" class="col-md-3 control-label">Email</label>
                   <div class="col-md-9">
-                    <input type="email" class="form-control" id="inputEmail3" name="email" placeholder="Email">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+                  <label for="password" class="col-md-3 control-label">Password</label>
                   <div class="col-md-9">
-                    <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Password">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                   </div>
                 </div>
+                
                 <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"> Remember me
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">Sign in</button>
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-default">Register</button>
+                     <span id='register_alert' class="text-danger"></span>
                   </div>
                 </div>
               </form>
