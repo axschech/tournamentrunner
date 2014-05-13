@@ -17,6 +17,10 @@
                 padding-top: 50px;
                 padding-bottom: 20px;
             }
+            h4
+            {
+              margin:0px;
+            }
         </style>
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/main.css">
@@ -60,7 +64,7 @@
                     $i = 1;
                     foreach($tournaments as $item)
                     {
-                        echo "<h4>".$i.". <a href='tournaments/".$item['id']."'>".$item['name']."</a></h4>";
+                        echo "<h4>".$i.". <a href='tournament/".$item['id']."'>".$item['name']."</a></h4>";
                         $i++;
                     }
                 ?>
@@ -77,20 +81,21 @@
                   <div class="form-group">
                       <label for="name" class="col-md-3 control-label">Name</label>
                       <div class="col-md-6">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="A for your tournament">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="A title for your tournament">
                       </div>
                     </div>
                 <h3> Add Players </h3>
                   <div class="form-group">
                     <label for="name" class="col-md-3 control-label">Name</label>
                     <div class="col-md-6">
-                      <input type="text" class="form-control" id="name" name="name" placeholder="Email">
+                      <input type="text" class="form-control" id="playerName" name="playerName" placeholder="Player Name">
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="col-sm-10">
-                      <button type="submit" class="btn btn-default pull-right">Add Player</button>
-                       <span id='register_alert' class="text-danger"></span>
+                       <button type="button" id="goTournament" class="btn btn-default btn-success pull-left" style="display:none">Ready!</button>
+                       <span id='add_alert' class="text-danger"></span>
+                       <button type="button" id="addPlayer" class="btn btn-default pull-right">Add Player</button>
                     </div>
                   </div>
                 </form>
@@ -99,6 +104,8 @@
           <div class="col-md-2">
               <div id="playerList" style="display:none">
                 <h2>Player List</h2>
+                <div id="listOfPlayers">
+                </div>
               </div>
           </div>
       </div>

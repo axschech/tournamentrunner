@@ -11,7 +11,7 @@ class LoggedController extends BaseController {
 			$res = User::find($userid)->get();
 			$user = $res[0]->toArray();
 
-			$res = Tournaments::where('user',$userid)->get();
+			$res = Tournament::where('user',$userid)->get();
 
 			$tournaments = array();
 
@@ -28,6 +28,18 @@ class LoggedController extends BaseController {
 		{
 			return Redirect::to('/');
 		}
+	}
+
+	public function getTournaments($id)
+	{
+		$tournaments = array();
+		$res = Tournament::where('user',$id)->get();
+		foreach($res as $item)
+		{
+			$tournaments[] = $item->toArray();
+		}
+		var_dump($tournaments);
+		exit;
 	}
 
 }

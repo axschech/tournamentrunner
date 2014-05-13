@@ -17,7 +17,8 @@ Route::post('logout',function(){
 	return Redirect::to('/');
 });
 
-Route::controller('tournaments/{id}','TournamentsController');
+
+Route::controller('tournament/{name?}','TournamentController');
 
 Route::controller('logged','LoggedController');
 
