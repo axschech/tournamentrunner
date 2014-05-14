@@ -70,7 +70,7 @@ $(document).ready(function(){
 		{
 			localStorage['title'] = title;
 		}
-		else
+		else if(title=="")
 		{
 			$('#add_alert').html('Please chose a title');
 			return false;
