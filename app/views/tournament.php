@@ -1,5 +1,5 @@
 <?php 
-  
+  $tournament = json_decode($tournament,true);
   if(!empty($tournament['name']))
   {
       $title = $tournament['name'];
@@ -8,6 +8,8 @@
   {
       $title = "";
   } 
+
+  $user = json_decode($user,true);
 
 ?>
 <!DOCTYPE html>
@@ -49,9 +51,14 @@
             <span class="icon-bar"></span>
           </button>
 
-          <a class="navbar-brand" href="#"></a>
+          <a class="navbar-brand" href="<?=url('logged')?>"><?=$user?> / <?=$tournament['name']?> </a>
         </div>
-       
+        <div class="navbar-collapse collapse">
+          <form action="<?=url('logout')?>" method="POST" class="navbar-form navbar-right" role="form">
+            
+            <button type="submit" class="btn btn-success">Log Out</button>
+          </form>
+        </div><!--/.navbar-collapse -->
       </div>
     </div>
 
@@ -66,14 +73,15 @@
                   <?php
                       $i = 1;
                       echo "<table class='table'>";
-                      echo "<thead><tr><th>Name</th><th>Score</th><th>Place</th></tr></thead>";
-                      foreach($players as $item)
+                      echo "<thead><tr><th>Name</th><th>Score</th><th>Place</th><th>Game</th></tr></thead>";
+                      foreach(json_decode($players,true) as $item)
                       {
                           echo "<tr>";
                           // echo "<td>".$i."</td>";
                           echo "<td>".$item['name']."</td>";
                           echo "<td>".$item['score']."</td>";
                           echo "<td>".$item['place']."</td>";
+                          echo "<td>".$item['game']."</td>";
                           echo "</tr>";
                           // $i++;
                       }
@@ -81,11 +89,107 @@
                   ?>
               </div>
           </div>
-            <div class="col-md-4">
+            <div class="col-md-6 col-md-offset-2">
                  <h2>Control Panel</h2>
-                 <h4>Live URL:</h4> Coming soon <br />
+                  <?php
+                 if($tournament['active']!=1)
+                 {
+
+                  ?>
+                  <div id="buttons">
+                 <br /><br />
+                 <button type="button" id="jumble" class="btn btn-default btn-lg">Randomize Pairings</button>
+                 <br />
+                 <br />
+                 <button type="button" id="start" class="btn btn-default btn-lg btn-success">Start Tournament!</button>
+                 <br />
+                 <br />
+                 <button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">New Game</button>
+                 <br />
+                 <br />
+                  <button type="button" id="end" class="btn btn-default btn-lg btn-danger">End Tournament</button>
+                  </div>
+                  <?php
+                  }
+                  else
+                  {
+                  ?>
+                  <div id="buttons">
+                    <span style="font-size:50px"> Game <?=$tournament['game']?> </span>
+                     <br /><br />
+                 <button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">New Game</button>
+                 <br />
+                 <br />
+                  <button type="button" id="end" class="btn btn-default btn-lg btn-danger">End Tournament</button>
+                  <br /><br /><br /><br /><br />
+                  </div>
+
+                  <?php
+                  }
+                  ?>
+
             </div>
+            <div class="row">
+              <div id="players">
+              
+            <?php
+                echo "<div class='col-md-2'><form class='playersForm'>";
+
+                $i = 0;
+                $j = 1;
+                $z = 0;
+
+                $players = json_decode($players,true);
+                
+                usort($players, function($a, $b){
+                    return ($a['order'] < $b['order']) ? -1 : 1;
+                });
+                foreach($players as $item)
+                {   
+                    // if($z==count($players)-1)
+                    // {
+                    //     echo "<button type='submit' class='btn'>Submit</button></form>";
+                    // }
+                   
+                    if($i==4)
+                    {
+
+                      echo "<button type='submit' class='btn'>Submit</button></form></div><div class='col-md-2'><form class='playersForm'>";
+                      
+                      $i=0;
+                    }
+                      echo "<div class='col-md-12'>";
+                      if($i==0)
+                      {
+                        echo "<h4>Round ".$j."</h4>";
+                        $j++;
+                      }
+                      
+                      echo $item['name'];
+                      echo "<div class='pull-right'><input type='text' name=".$item['name']." style='width:50px' /></div>";
+                      echo "</div>";
+                      echo "<br />";
+                      if($z==count($players)-1)
+                      {
+                         echo "<button type='submit' class='btn'>Submit</button></form>";
+                      }
+                      $i++;
+                      $z++;
+                      
+                    
+                }
+
+            ?>
+                <br />
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-4">
+                 <h2>Information</h2>
+                 <h4>Live URL:</h4> Coming soon <br />
+            </div> -->
       </div>
+      
       <hr>
 
       <footer>

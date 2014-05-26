@@ -4,14 +4,15 @@ class TournamentController extends BaseController {
 
 	public function getIndex($id)
 	{
+
+		$user = User::find(Session::get('logged'))->toArray();
+
 		$tournament = Tournament::find($id);
-		$playerRes = Player::where('tournament',$tournament->id)->get();
-		$players = array();
-		foreach($playerRes as $item)
-		{
-			$players[] = $item->toArray();
-		}
-		return View::make('tournament',array('tournament'=>$tournament->toArray(),"players"=>$players));
+
+		$tournament->getTournament();
+
+		
+		return View::make('tournament',array('tournament'=>json_encode($tournament->toArray()),"players"=>json_encode($tournament->players),"user"=>json_encode($user['name'])));
 	}
 
 	public function postIndex()
@@ -27,12 +28,12 @@ class TournamentController extends BaseController {
 
 			$tournament->players = $playersCount;
 			$tournament->name = $input['title'];
-			$tournament->active=1;
+			// $tournament->active=1;
 			$tournament->user = Session::get('logged');
 
 			$tournament->save();
 			$id = $tournament->id;
-
+			$o = 1;
 			foreach(json_decode($input['players']) as $item)
 			{
 				$player = new Player();
@@ -41,6 +42,8 @@ class TournamentController extends BaseController {
 				$player->place = 0;
 				$player->game = 0;
 				$player->score = 0;
+				$player->order = $o;
+				$o++;
 
 				$player->save();
 			}
@@ -50,8 +53,90 @@ class TournamentController extends BaseController {
 		{
 			return  json_encode(array("error"=>array("That tournament already exists!")));
 		}
-		
+	}
 
+	public function putIndex()
+	{
+		$input = Input::all();
+		var_dump($input);
 		exit;
+	}
+
+	public function deleteIndex($id)
+	{
+		$tournament = Tournament::find($id);
+
+		$res = $tournament->deleteTournament();
+
+		
+		if($res==1)
+		{
+			$tournaments = array();
+
+			$res = Tournament::where('user',Session::get('logged'))->get();
+			if(!empty($res))
+			{
+				foreach($res as $item)
+				{
+					$tournaments[] = $item->toArray();
+				}
+			}
+			else
+			{
+				$tournaments = array();
+			}
+			
+			return json_encode(array('error'=>array(),'tournaments'=>$tournaments));
+		}
+		else
+		{
+			return json_encode(array('error'=>array('Tournament not found')));
+		}
+	}
+
+
+	public function postGame($id)
+	{
+		$tournament = Tournament::find($id);
+		if(!empty($tournament))
+		{
+			$res = $tournament->startTournament();
+			return json_encode(array('error'=>array(),'game'=>array($res)));
+		}
+		else
+		{
+			return json_encode(array('error'=>array('Tournament not found')));
+		}
+	}
+
+
+	public function getPlayers($id)
+	{
+
+		$tournament = Tournament::find($id);
+		if(!empty($tournament))
+		{
+			$tournament->getTournament();
+			$check = Input::get('check',false);
+			if($check)
+			{
+				shuffle($tournament->players);
+				$o = 1;
+				foreach($tournament->players as $item)
+				{
+					$player = Player::find($item['id']);
+					$player->order = $o;
+					$player->save();
+					$o++;
+				}
+			}
+			return json_encode(array('error'=>array(), "players"=>array($tournament->players)));
+		}
+		else
+		{
+			return json_encode(array("error"=>array("Tournament not found")));
+		}
+		
+		
 	}
 }

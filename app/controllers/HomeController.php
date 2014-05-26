@@ -18,6 +18,11 @@ class HomeController extends BaseController {
 
 	public function getIndex()
 	{
+		if(Cookie::has('logged'))
+		{
+			Session::put('logged',Cookie::get('logged'));
+		}
+
 		if(Session::has('logged'))
 		{
 			return Redirect::to('/logged');
@@ -54,8 +59,21 @@ class HomeController extends BaseController {
 					if(Hash::check($input['password'], $res->password))
 					{
 						Session::put('logged',$res->id);
-
-						return json_encode(array("error"=>array()));
+						$cookie = "";
+						if(!empty($input['remember']))
+						{
+							$cookie = Cookie::forever('logged',$res->id);
+						}
+						
+						if($cookie)
+						{
+							return Response::make(json_encode(array("error"=>array())))->withCookie($cookie);
+						}
+						else
+						{
+							return json_encode(array("error"=>array()));
+						}
+						
 					}
 					else
 					{

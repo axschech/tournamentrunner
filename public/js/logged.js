@@ -66,6 +66,12 @@ $(document).ready(function(){
 		e.preventDefault();
 		var player = $('#playerName').val();
 		var title = $('#title').val();
+		if(player=="")
+		{
+			$('#add_alert').html("You must enter a name");
+			return false;
+		}
+
 		if(!localStorage['title'])
 		{
 			localStorage['title'] = title;
@@ -79,6 +85,10 @@ $(document).ready(function(){
 		if(!localStorage['tournament'])
 		{
 			localStorage['tournament'] = JSON.stringify([player]);
+			loadPlayers();
+			$('#playerName').val("");
+			$('#add_alert').html("");
+
 		}
 		else
 		{
@@ -107,6 +117,8 @@ $(document).ready(function(){
 		}
 		if(localStorage['tournament'])
 		{
+			$('#goTournament').show();
+			
 			var playersHTML = "";
 			var players = JSON.parse(localStorage['tournament']);
 			var x = 1;
@@ -148,5 +160,30 @@ $(document).ready(function(){
 		{
 			return false;
 		}
+	}
+
+	window.henh = function deleteTournament(id)
+	{
+		$.ajax({
+			url: 'tournament/'+id,
+			method: 'DELETE',
+			dataType: 'JSON',
+			success: function(data)
+			{
+				if(data.error.length==0 && data.tournaments)
+				{
+					var html = "";
+					for(var i=0; i<data.tournaments.length; i++)
+					{
+						var plus = i+1;
+						var item = data.tournaments[i];
+						html+="<div class='col-md-10'><h4>"+plus+". <a href='tournament/"+item['id']+"'>"+item['name']+"</a><button type='button' onClick='henh("+item['id']+")' class='btn btn-xs pull-right'><span class='glyphicon glyphicon-remove'></span></button></h4></div>";
+					}
+					$('#currentTournaments').html(html);
+				}
+
+			}
+		});
+		return false;
 	}
 });

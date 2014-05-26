@@ -14,7 +14,9 @@
 // Route::controller('tournaments','TournamentsController');
 Route::post('logout',function(){
 	Session::flush();
-	return Redirect::to('/');
+	$cookie = Cookie::forget('logged');
+	
+	return Redirect::to('/')->withCookie($cookie);
 });
 
 

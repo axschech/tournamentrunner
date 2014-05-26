@@ -1,4 +1,6 @@
-
+<?php
+  $user = json_decode($user,true);
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -40,7 +42,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#"><?=$user['name']?></a>
         </div>
        <div class="navbar-collapse collapse">
           <form action="logout" method="POST" class="navbar-form navbar-right" role="form">
@@ -62,9 +64,9 @@
                 <div id="currentTournaments">
                 <?php
                     $i = 1;
-                    foreach($tournaments as $item)
+                    foreach(json_decode($tournaments,true) as $item)
                     {
-                        echo "<h4>".$i.". <a href='tournament/".$item['id']."'>".$item['name']."</a></h4>";
+                        echo "<div class='col-md-10'><h4>".$i.". <a href='tournament/".$item['id']."'>".$item['name']."</a><button type='button' onClick='henh(".$item['id'].")' class='btn btn-xs pull-right'><span class='glyphicon glyphicon-remove'></span></button></h4></div>";
                         $i++;
                     }
                 ?>

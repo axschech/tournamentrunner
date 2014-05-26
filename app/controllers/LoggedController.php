@@ -22,7 +22,7 @@ class LoggedController extends BaseController {
 
 			// $res = Player::where('user',$userid)->get();
 
-			return View::make('logged', array("user"=>$user,'tournaments'=>$tournaments));
+			return View::make('logged', array("user"=>json_encode($user),'tournaments'=>json_encode($tournaments)));
 		}
 		else
 		{
@@ -38,7 +38,14 @@ class LoggedController extends BaseController {
 		{
 			$tournaments[] = $item->toArray();
 		}
-		var_dump($tournaments);
+		if(count($tournaments)>0)
+		{
+			return json_encode(array('errors'=>array(),'tournaments'=>$tournaments));
+		}
+		else
+		{
+			return json_encode(array('errors'=>array('No tournaments found')));
+		}
 		exit;
 	}
 

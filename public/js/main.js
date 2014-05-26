@@ -45,6 +45,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		var form = $(this).serializeArray();
 		var post = {};
+		var cookie = false;
 		for(var i in form)
 		{
 			if(form[i].value=="")
@@ -57,6 +58,10 @@ $(document).ready(function(){
 			else
 			{
 				post[form[i].name] = form[i].value;
+				if(form[i].name=="remember" && form[i].value=='on')
+				{
+					cookie=true;
+				}
 			}
 		}
 		
@@ -76,6 +81,10 @@ $(document).ready(function(){
 			}
 			else
 			{
+				if(cookie)
+				{
+					document.cookie = 'logged='+data.id+"; expires=Sat May 24 3014 21:09:01 GMT-0400";
+				}
 				location.reload();
 			}
 		});
