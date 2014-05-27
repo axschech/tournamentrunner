@@ -109,6 +109,12 @@ class TournamentController extends BaseController {
 		}
 	}
 
+	public function putGame($id)
+	{
+		$input = Input::all();
+
+		exit;
+	}
 
 	public function getPlayers($id)
 	{

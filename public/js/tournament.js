@@ -75,7 +75,7 @@ $(document).ready(function(){
 	function buildChart()
 	{
 		$.get(id+'/players',function(d){
-			
+
 			var data = JSON.parse(d);
 			if(data.error.length>0)
 			{
@@ -106,5 +106,12 @@ $(document).ready(function(){
 			}
 		});
 	}
+
+	$('.playersForm').submit(function(e){
+		e.preventDefault();
+		var form = $(this).serializeArray();
+		console.log(form);
+		return false;
+	});
 
 });
