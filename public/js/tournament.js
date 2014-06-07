@@ -13,37 +13,7 @@ $(document).ready(function(){
 			}
 			else
 			{
-				var i = 0;
-				var j = 1;
-				var n = 0;
-				var html = "<div class='col-md-2'>";
-				// var html="";
-				for(var z in data.players[0])
-                {   
-                    if(i==4)
-                    {
-                      html+= "<button type='submit' class='btn'>Submit</button></form></div><div class='col-md-2'><form class='playersForm'>";
-                      i=0;
-                    }
-                      html+= "<div class='col-md-12'>";
-                      if(i==0)
-                      {
-                        html+= "<h4>Round "+j.toString()+"</h4>";
-                        j++;
-                      }
-                      html+= data.players[0][z].name;
-                      html+= "<div class='pull-right'><input type='text' style='width:50px' /></div>";
-                      html+= "</div>";
-                      html+= "<br />";
-                    i++;
-                    n++;
-                    if(n==data.players[0].length)
-	                {
-	                   html+= "<button type='submit' class='btn'>Submit</button></form>";
-	                }
-                }
-
-                $('#players').html(html);
+				refreshPlayers(data);
 			}
 		});
 	});
@@ -64,13 +34,23 @@ $(document).ready(function(){
 			else
 			{
 				var game = data.game[0];
-				html = '<div id="buttons"><span style="font-size:50px"> Game '+game+' </span><br /><br /><button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">New Game</button><br /><br /><button type="button" id="end" class="btn btn-default btn-lg btn-danger">End Tournament</button><br /><br /><br /><br /><br /></div>';
+				html = '<div id="buttons"><span style="font-size:50px"> Game '+game+' </span><br /><br /><button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">Next Game</button><br /><br /><button type="button" id="end" class="btn btn-default btn-lg btn-danger">End Tournament</button><br /><br /><br /><br /><br /></div>';
 				$('#buttons').html(html);
 				buildChart();
 			}
 		});
 	});
 
+	$('#new').click(function(e){
+		$.ajax({
+			url:id+'/',
+			method:'PUT',
+			sucess: function(data)
+			{
+				console.log(data);
+			}
+		});
+	});
 
 	function buildChart()
 	{
@@ -110,8 +90,69 @@ $(document).ready(function(){
 	$('.playersForm').submit(function(e){
 		e.preventDefault();
 		var form = $(this).serializeArray();
-		console.log(form);
+		var put = {};
+		for(var i in form)
+		{
+			put[form[i].name] = form[i].value;
+		}
+
+		var daURL = id+'/game';
+		$.ajax({
+			url: daURL,
+			method: 'PUT',
+			data: {"data":put},
+			sucess: function(data)
+			{
+				console.log(data);
+			}
+		});
 		return false;
 	});
+
+	function refreshPlayers(data)
+	{
+		var i = 0;
+		var j = 1;
+		var n = 0;
+		var html = "<div class='col-md-2'>";
+		// var html="";
+		for(var z in data.players[0])
+	    {   
+	        if(i==4)
+	        {
+	          html+= "<button type='submit' class='btn'>Submit</button></form></div><div class='col-md-2'><form class='playersForm'>";
+	          i=0;
+	        }
+	          html+= "<div class='col-md-12'>";
+	          if(i==0)
+	          {
+	            html+= "<h4>Round "+j.toString()+"</h4>";
+	            j++;
+	          }
+	          html+= data.players[0][z].name;
+
+	          if(data.players[0][z].scored==0)
+	          {
+	          	html+= "<div class='pull-right'><input type='text' name='"+data.players[0][z].id+"' style='width:50px' /></div>";
+	          }
+	          else
+	          {
+	          	html+= "<div class='pull-right'><input type='text' name='"+data.players[0][z].id+"' value='"+data.players[0][z].score+"' class='disabled' style='width:50px' /></div>";
+	          }
+	          html+= "</div>";
+	          html+= "<br />";
+	        i++;
+	        n++;
+	        if(n==data.players[0].length)
+	        {
+	           html+= "<button type='submit' class='btn'>Submit</button></form>";
+	        }
+	    }
+
+	    $('#players').html(html);
+
+	}
+
+
 
 });

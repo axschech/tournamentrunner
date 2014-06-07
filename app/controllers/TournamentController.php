@@ -55,7 +55,7 @@ class TournamentController extends BaseController {
 		}
 	}
 
-	public function putIndex()
+	public function putIndex($id)
 	{
 		$input = Input::all();
 		var_dump($input);
@@ -112,8 +112,37 @@ class TournamentController extends BaseController {
 	public function putGame($id)
 	{
 		$input = Input::all();
+		$scored = array();
 
-		exit;
+		foreach($input['data'] as $key=>$val)
+		{
+			$player = Player::find($key);
+			if($player->scored)
+			{
+				$scored[] = $player->name;
+				continue;
+			}
+			else
+			{
+				$player->score+=$val;
+				$player->curScore = $val;
+				$player->scored=1;
+				$player->save();
+			}
+		}
+
+		$tournament = Tournament::find($id);
+
+		$tournament->checkDone();
+
+		if(count($scored)>0)
+		{
+			return json_encode(array('error'=>array('scored'=>$scored)));
+		}
+		else
+		{
+			return json_encode(array('error'=>array()));
+		}
 	}
 
 	public function getPlayers($id)
@@ -145,4 +174,5 @@ class TournamentController extends BaseController {
 		
 		
 	}
+
 }

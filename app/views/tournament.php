@@ -104,7 +104,7 @@
                  <button type="button" id="start" class="btn btn-default btn-lg btn-success">Start Tournament!</button>
                  <br />
                  <br />
-                 <button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">New Game</button>
+                 <button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">Next Game</button>
                  <br />
                  <br />
                   <button type="button" id="end" class="btn btn-default btn-lg btn-danger">End Tournament</button>
@@ -117,7 +117,20 @@
                   <div id="buttons">
                     <span style="font-size:50px"> Game <?=$tournament['game']?> </span>
                      <br /><br />
-                 <button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">New Game</button>
+                 <?php
+                    if(!$tournament['roundDone'])
+                    {
+                 ?>
+                 <button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">Next Game</button>
+                 <?php
+                    }
+                    else
+                    {
+                      ?>
+                        <button type="button" id="new" class="btn btn-default btn-lg btn-warning">Next Game</button>
+                      <?php
+                    }
+                 ?>
                  <br />
                  <br />
                   <button type="button" id="end" class="btn btn-default btn-lg btn-danger">End Tournament</button>
@@ -166,7 +179,16 @@
                       }
                       
                       echo $item['name'];
-                      echo "<div class='pull-right'><input type='text' name=".$item['name']." style='width:50px' /></div>";
+                      if($item['scored']==0)
+                      {
+                          echo "<div class='pull-right'><input type='text' name=".$item['id']." style='width:50px' /></div>";
+                      }
+                      else
+                      {
+                          echo "<div class='pull-right'><input disabled type='text' name=".$item['id']." value='".$item['curScore']."' style='width:50px' /></div>";
+                      }
+
+                        
                       echo "</div>";
                       echo "<br />";
                       if($z==count($players)-1)

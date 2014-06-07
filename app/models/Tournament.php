@@ -52,6 +52,33 @@ class Tournament extends Eloquent {
 		$res = Tournament::destroy($this->id);
 		return $res;
 	}
-}
 
+	public function checkDone($id="")
+	{
+		$this->getTournament();
+		$nope = false;
+		foreach($this->players as $item)
+		{
+			if($item['scored']==0)
+			{
+				$nope = true;
+				break;
+			}
+		}
+		if($nope)
+		{
+			$this->roundDone = 0;
+			$this->save();
+			return true;
+		}
+		else
+		{
+			$this->roundDone = 1;
+			$this->save();
+			return false;
+		}
+
+	}
+}
+		
 ?>
