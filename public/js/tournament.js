@@ -103,6 +103,7 @@ $(document).ready(function(){
 			data: {"data":put},
 			sucess: function(data)
 			{
+				buildChart();
 				console.log(data);
 			}
 		});
@@ -137,7 +138,7 @@ $(document).ready(function(){
 	          }
 	          else
 	          {
-	          	html+= "<div class='pull-right'><input type='text' name='"+data.players[0][z].id+"' value='"+data.players[0][z].score+"' class='disabled' style='width:50px' /></div>";
+	          	html+= "<div class='pull-right'><input type='text' name='"+data.players[0][z].id+"' value='"+data.players[0][z].score+"' disabled style='width:50px' /></div>";
 	          }
 	          html+= "</div>";
 	          html+= "<br />";

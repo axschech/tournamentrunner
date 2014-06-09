@@ -79,6 +79,28 @@ class Tournament extends Eloquent {
 		}
 
 	}
+
+	public function nextGame($id="")
+	{
+		$this->getTournament();
+		foreach($this->players as $item)
+		{
+			$player = Player::find($item['id']);
+			$player->scored = 0;
+			$player->curScore = 0;
+			$player->game++;
+			$player->order = $player->score;
+			$player->save();
+		}
+
+		$this->game++;
+		$this->save();
+		
+		$retArray = $this->toArray();
+
+		$retArray['players'] = $this->players;
+		return $retArray;
+	}
 }
 		
 ?>

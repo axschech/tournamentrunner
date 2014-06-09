@@ -57,9 +57,12 @@ class TournamentController extends BaseController {
 
 	public function putIndex($id)
 	{
-		$input = Input::all();
-		var_dump($input);
-		exit;
+		$tournament = Tournament::find($id);
+		$res = $tournament->nextGame();
+		if($tournament)
+		{
+			return json_encode(array('error'=>array(),'tournament'=>$res));
+		}
 	}
 
 	public function deleteIndex($id)
