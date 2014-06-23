@@ -61,7 +61,8 @@ class TournamentController extends BaseController {
 		$res = $tournament->nextGame();
 		if($tournament)
 		{
-			return json_encode(array('error'=>array(),'tournament'=>$res));
+			$tournament->getTournament();
+			return json_encode(array('error'=>array(),'tournament'=>$res,'players'=>$tournament->players));
 		}
 	}
 
@@ -104,7 +105,8 @@ class TournamentController extends BaseController {
 		if(!empty($tournament))
 		{
 			$res = $tournament->startTournament();
-			return json_encode(array('error'=>array(),'game'=>array($res)));
+			$tournament->getTournament();
+			return json_encode(array('error'=>array(),'game'=>array($res),'players'=>array($tournament->players),'active'=>array($tournament->active)));
 		}
 		else
 		{
@@ -116,6 +118,14 @@ class TournamentController extends BaseController {
 	{
 		$input = Input::all();
 		$scored = array();
+
+		$tournament = Tournament::find($id);
+
+		if($tournament->active==0)
+		{
+			return json_encode(array('error'=>array('active'=>false)));
+			die();
+		}
 
 		foreach($input['data'] as $key=>$val)
 		{
@@ -133,10 +143,8 @@ class TournamentController extends BaseController {
 				$player->save();
 			}
 		}
-
-		$tournament = Tournament::find($id);
-
-		$tournament->checkDone();
+		$done = $tournament->checkDone();
+		$tournament->getTournament();
 
 		if(count($scored)>0)
 		{
@@ -144,8 +152,10 @@ class TournamentController extends BaseController {
 		}
 		else
 		{
-			return json_encode(array('error'=>array()));
+			return json_encode(array('error'=>array(),'players'=>$tournament->players, 'done'=>$done));
 		}
+		
+		
 	}
 
 	public function getPlayers($id)
@@ -168,7 +178,7 @@ class TournamentController extends BaseController {
 					$o++;
 				}
 			}
-			return json_encode(array('error'=>array(), "players"=>array($tournament->players)));
+			return json_encode(array('error'=>array(), "players"=>array($tournament->players),"active"=>array($tournament->active)));
 		}
 		else
 		{

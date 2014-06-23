@@ -34,15 +34,18 @@
 
         <link rel="stylesheet" href="<?php echo asset('css/bootstrap-theme.min.css') ?>">
         <link rel="stylesheet" href="<?php echo asset('css/main.css') ?>">
+        <link rel="stylesheet" href="<?php echo asset('css/bootstrap-notify.css') ?>">
 
         <script src="<?php echo asset('js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') ?>"></script>
     </head>
     <body>
+    <div class='notifications top-right' style="font-size:24px"></div>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
+
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -64,6 +67,7 @@
 
 
     <div class="container">
+    
       <!-- Example row of columns -->
       <h1>Tournament: <?php echo $title ?></h1>
       <div class="row">
@@ -94,14 +98,13 @@
                   <?php
                  if($tournament['active']!=1)
                  {
-
                   ?>
                   <div id="buttons">
                  <br /><br />
                  <button type="button" id="jumble" class="btn btn-default btn-lg">Randomize Pairings</button>
                  <br />
                  <br />
-                 <button type="button" id="start" class="btn btn-default btn-lg btn-success">Start Tournament!</button>
+                 <button type="button" id="start" class="btn btn-default btn-lg btn-success">Start Tournament!</button> <span id="tournament_alert" class="text-danger" style="font-size:24px"></span>
                  <br />
                  <br />
                  <button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">Next Game</button>
@@ -200,7 +203,7 @@
                       
                     
                 }
-
+                
             ?>
                 <br />
                 </div>
@@ -223,6 +226,7 @@
         <script src="<?php echo asset('js/vendor/bootstrap.min.js') ?>"></script>
 
         <script src="<?php echo asset('js/tournament.js') ?>"></script>
+        <script src="<?php echo asset('js/bootstrap-notify.js') ?>"></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>

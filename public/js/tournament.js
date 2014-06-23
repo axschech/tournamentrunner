@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	"user strict";
 	var url = location.href;
 	var splits = url.split('/');
 	var id = splits[splits.length-1];
@@ -45,25 +46,45 @@ $(document).ready(function(){
 		$.ajax({
 			url:id+'/',
 			method:'PUT',
-			sucess: function(data)
+			dataType:'JSON',
+			success: function(data)
 			{
 				console.log(data);
+				var input = {"players":[]};
+				input.players[0] = data.players;
+
+				buildChart(input);
+				refreshPlayers(input);
 			}
 		});
 	});
 
-	function buildChart()
+	function buildChart(data)
 	{
-		$.get(id+'/players',function(d){
+		if(data!=undefined)
+		{
+			build(data);
+		}
+		else
+		{
+			$.get(id+'/players',function(d){
 
-			var data = JSON.parse(d);
-			if(data.error.length>0)
-			{
-				return data.error[0];
-			}
-			else
-			{
-				var html = "";
+				var data = JSON.parse(d);
+				if(data.error.length>0)
+				{
+					return data.error[0];
+				}
+				else
+				{
+					build(data);
+				}
+			});
+		}
+		
+
+		function build(data)
+		{
+			var html = "";
 
 				i = 1;
 				html+= "<table class='table'>";
@@ -83,12 +104,13 @@ $(document).ready(function(){
 				}
 				html+= "</table>";
 				$('#playerChart').html(html);
-			}
-		});
+		}
 	}
 
-	$('.playersForm').submit(function(e){
+	$('.playersForm').on('submit',function(e){
+		console.log('submitted');
 		e.preventDefault();
+		console.log('got here');
 		var form = $(this).serializeArray();
 		var put = {};
 		for(var i in form)
@@ -101,21 +123,38 @@ $(document).ready(function(){
 			url: daURL,
 			method: 'PUT',
 			data: {"data":put},
-			sucess: function(data)
+			dataType: 'JSON',
+			success: function(data)
 			{
-				buildChart();
 				console.log(data);
+				console.log(data.error.active);
+				if(data.error.active!=undefined && data.error.active==false)
+				{
+					$('.top-right').notify({
+						message: { text: 'Please start the tournament first' },
+						type: 'danger'
+					}).show();
+					return false;
+				}
+				if(data.done)
+				{
+					$('#new').removeClass('disabled')
+				}
+				var input = {"players":[]};
+				input.players[0] = data.players;
+				buildChart(input);
+				refreshPlayers(input);
 			}
 		});
-		return false;
 	});
 
 	function refreshPlayers(data)
 	{
+		console.log(data);
 		var i = 0;
 		var j = 1;
 		var n = 0;
-		var html = "<div class='col-md-2'>";
+		var html = "<div class='col-md-2'><form class='playersForm'>";
 		// var html="";
 		for(var z in data.players[0])
 	    {   
@@ -138,20 +177,61 @@ $(document).ready(function(){
 	          }
 	          else
 	          {
-	          	html+= "<div class='pull-right'><input type='text' name='"+data.players[0][z].id+"' value='"+data.players[0][z].score+"' disabled style='width:50px' /></div>";
+	          	html+= "<div class='pull-right'><input type='text' name='"+data.players[0][z].id+"' value='"+data.players[0][z].curScore+"' disabled style='width:50px' /></div>";
 	          }
 	          html+= "</div>";
 	          html+= "<br />";
-	        i++;
-	        n++;
-	        if(n==data.players[0].length)
+	       
+	        if(n==data.players[0].length-1)
 	        {
 	           html+= "<button type='submit' class='btn'>Submit</button></form>";
 	        }
+	         i++;
+	        n++;
 	    }
 
 	    $('#players').html(html);
+	    
+	    $('.playersForm').on('submit',function(e){
+		console.log('submitted');
+		e.preventDefault();
+		console.log('got here');
+		var form = $(this).serializeArray();
+		var put = {};
+		for(var i in form)
+		{
+			put[form[i].name] = form[i].value;
+		}
 
+		var daURL = id+'/game';
+		$.ajax({
+			url: daURL,
+			method: 'PUT',
+			data: {"data":put},
+			dataType: 'JSON',
+			success: function(data)
+			{
+				console.log(data);
+				console.log(data.error.active);
+				if(data.error.active!=undefined && data.error.active==false)
+				{
+					$('.top-right').notify({
+						message: { text: 'Please start the tournament first' },
+						type: 'danger'
+					}).show();
+					return false;
+				}
+				if(data.done)
+				{
+					$('#new').removeClass('disabled')
+				}
+				var input = {"players":[]};
+				input.players[0] = data.players;
+				buildChart(input);
+				refreshPlayers(input);
+			}
+		});
+	});
 	}
 
 

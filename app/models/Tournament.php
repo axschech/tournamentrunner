@@ -10,7 +10,11 @@ class Tournament extends Eloquent {
 
 	public function getTournament($id="")
 	{
-		$this->players = Player::where('tournament',$this->id)->get()->toArray();
+		$players = Player::where('tournament',$this->id)->get()->toArray();
+		 usort($players, function($a, $b){
+                    return ($a['order'] < $b['order']) ? -1 : 1;
+                });
+		$this->players = $players;
 	}
 
 	public function startTournament($id="")
@@ -69,13 +73,13 @@ class Tournament extends Eloquent {
 		{
 			$this->roundDone = 0;
 			$this->save();
-			return true;
+			return false;
 		}
 		else
 		{
 			$this->roundDone = 1;
 			$this->save();
-			return false;
+			return true;
 		}
 
 	}
@@ -92,7 +96,7 @@ class Tournament extends Eloquent {
 			$player->order = $player->score;
 			$player->save();
 		}
-
+		$this->roundDone = 0;
 		$this->game++;
 		$this->save();
 		
