@@ -26,12 +26,16 @@ class LoggedController extends BaseController {
 		}
 		else
 		{
-			return Redirect::to('/');
+			return Redirect::to('/login');
 		}
 	}
 
 	public function getTournaments($id)
 	{
+		if(!Session::has('logged'))
+		{
+			return Response::make('Not Authorized',400);
+		}
 		$tournaments = array();
 		$res = Tournament::where('user',$id)->get();
 		foreach($res as $item)

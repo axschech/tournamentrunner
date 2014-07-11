@@ -19,7 +19,7 @@ $(document).ready(function(){
 			}
 		}
 
-		$.post('register',post,function(d){
+		$.post('login/register',post,function(d){
 			var data = JSON.parse(d);
 			if(data.error.length>0)
 			{

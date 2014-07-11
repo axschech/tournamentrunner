@@ -54,7 +54,7 @@
             <span class="icon-bar"></span>
           </button>
 
-          <a class="navbar-brand" href="<?=url('logged')?>"><?=$user?> / <?=$tournament['name']?> </a>
+          <a class="navbar-brand" href="<?=url('/')?>"><?=$user?> / <?=$tournament['name']?> </a>
         </div>
         <div class="navbar-collapse collapse">
           <form action="<?=url('logout')?>" method="POST" class="navbar-form navbar-right" role="form">
@@ -203,7 +203,7 @@
                       
                     
                 }
-                
+
             ?>
                 <br />
                 </div>
@@ -218,7 +218,7 @@
       <hr>
 
       <footer>
-        <p>&copy; Company 2014</p>
+        <p><a href="http://axschech.com">axschech</a> &copy; 2014</p>
       </footer>
     </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>

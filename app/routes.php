@@ -16,15 +16,52 @@ Route::post('logout',function(){
 	Session::flush();
 	$cookie = Cookie::forget('logged');
 	
-	return Redirect::to('/')->withCookie($cookie);
+	return Redirect::to('/login')->withCookie($cookie);
 });
 
 
 Route::controller('tournament/{name?}','TournamentController');
 
-Route::controller('logged','LoggedController');
+Route::controller('/login', 'HomeController');
 
-Route::controller('/', 'HomeController');
+Route::controller('/','LoggedController');
+
+Route::filter('no', function($route)
+{
+	if(!Session::has('logged'))
+	{
+		$message = "<h1>Not Authorized, go <a href='/'>home</a>?</h1>";
+		return Response::make($message,401);
+	}
+
+  	$id = $route->getParameter('name');
+  	$check = false;
+  	if(!empty($id))
+  	{
+  		$tournament = Tournament::find($id);
+  		if($tournament)
+  		{
+  			$user = $tournament->user;
+  			if($user==Session::get('logged'))
+  			{
+  				$check = true;
+  			}
+  		}
+  	}
+  	else
+  	{
+  		$check = true;
+  	}
+
+  	if(!$check)
+  	{
+  		$message = "<h1>Not Authorized, go <a href='/'>home</a>?</h1>";
+		return Response::make($message,401);
+  	}
+
+  	
+});
+
 
 
 ?>

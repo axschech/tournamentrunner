@@ -2,6 +2,11 @@
 
 class TournamentController extends BaseController {
 
+	public function __construct($id="")
+	{
+	    $this->beforeFilter('no');
+	}
+
 	public function getIndex($id)
 	{
 
@@ -20,9 +25,19 @@ class TournamentController extends BaseController {
 		$input = Input::all();
 		$playersCount = count($input['players']);
 
-		$check = Tournament::where('name',$input['title'])->get();
+		$checks = Tournament::where('name',$input['title'])->get()->toArray();
+		$found = false;
 		
-		if(empty($check[0]))
+		foreach($checks as $check)
+		{
+			if($check['user']==Session::get('logged'))
+			{
+				$found = true;
+				break;
+			}
+		}
+
+		if(!$found)
 		{
 			$tournament = new Tournament();
 

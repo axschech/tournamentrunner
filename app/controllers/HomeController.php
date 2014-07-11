@@ -25,7 +25,7 @@ class HomeController extends BaseController {
 
 		if(Session::has('logged'))
 		{
-			return Redirect::to('/logged');
+			return Redirect::to('/');
 		}
 		else
 		{
@@ -33,7 +33,7 @@ class HomeController extends BaseController {
 		}
 	}
 
-	public function postLogin()
+	public function postIndex()
 	{
 		$input = Input::all();
 		$missing = array();
