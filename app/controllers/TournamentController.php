@@ -203,4 +203,21 @@ class TournamentController extends BaseController {
 		
 	}
 
+	public function getDone($id)
+	{
+		$tournament = Tournament::find($id);
+		var_dump($tournament);
+		exit;
+
+	}
+
+	public function postDone($id)
+	{
+		$tournament = Tournament::find($id);
+		if($tournament->tournamentDone())
+		{
+			return true;
+		}
+	}
+
 }

@@ -110,7 +110,7 @@
                  <button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">Next Game</button>
                  <br />
                  <br />
-                  <button type="button" id="end" class="btn btn-default btn-lg btn-danger">End Tournament</button>
+                  <button type="button" id="done" class="btn btn-default btn-lg btn-danger">End Tournament</button>
                   </div>
                   <?php
                   }
@@ -118,7 +118,7 @@
                   {
                   ?>
                   <div id="buttons">
-                    <span style="font-size:50px"> Game <?=$tournament['game']?> </span>
+                    <span id="gameNum" style="font-size:50px"> Game <?=$tournament['game']?> </span>
                      <br /><br />
                  <?php
                     if(!$tournament['roundDone'])
@@ -136,7 +136,7 @@
                  ?>
                  <br />
                  <br />
-                  <button type="button" id="end" class="btn btn-default btn-lg btn-danger">End Tournament</button>
+                  <button type="button" id="done" class="btn btn-default btn-lg btn-danger">End Tournament</button>
                   <br /><br /><br /><br /><br />
                   </div>
 
@@ -157,9 +157,9 @@
 
                 $players = json_decode($players,true);
                 
-                usort($players, function($a, $b){
-                    return ($a['order'] < $b['order']) ? -1 : 1;
-                });
+                // usort($players, function($a, $b){
+                //     return ($a['order'] < $b['order']) ? -1 : 1;
+                // });
                 foreach($players as $item)
                 {   
                     // if($z==count($players)-1)

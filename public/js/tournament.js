@@ -35,7 +35,7 @@ $(document).ready(function(){
 			else
 			{
 				var game = data.game[0];
-				html = '<div id="buttons"><span style="font-size:50px"> Game '+game+' </span><br /><br /><button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">Next Game</button><br /><br /><button type="button" id="end" class="btn btn-default btn-lg btn-danger">End Tournament</button><br /><br /><br /><br /><br /></div>';
+				html = '<div id="buttons"><span style="font-size:50px"> Game '+game+' </span><br /><br /><button type="button" id="new" class="btn btn-default btn-lg btn-warning disabled ">Next Game</button><br /><br /><button type="button" id="done" class="btn btn-default btn-lg btn-danger">End Tournament</button><br /><br /><br /><br /><br /></div>';
 				$('#buttons').html(html);
 				buildChart();
 			}
@@ -49,12 +49,29 @@ $(document).ready(function(){
 			dataType:'JSON',
 			success: function(data)
 			{
-				console.log(data);
+				var html = "Game "+data.tournament.game;
+				$('#gameNum').html(html);
 				var input = {"players":[]};
 				input.players[0] = data.players;
 
 				buildChart(input);
 				refreshPlayers(input);
+				$("#new").addClass('disabled');
+			}
+		});
+	});
+
+	$('#done').click(function(e){
+		$.ajax({
+			url:id+'/done',
+			method: 'POST',
+			dataType: 'JSON'.
+			success: function(data)
+			{
+				if(data==true)
+				{
+					document.reload();
+				}
 			}
 		});
 	});
@@ -108,13 +125,20 @@ $(document).ready(function(){
 	}
 
 	$('.playersForm').on('submit',function(e){
-		console.log('submitted');
+
 		e.preventDefault();
-		console.log('got here');
+
 		var form = $(this).serializeArray();
 		var put = {};
 		for(var i in form)
 		{
+			if(form[i].value=="")
+			{
+				$('.top-right').notify({
+					message: { text: 'Please make sure all players have a score' },
+					type: 'danger'
+				}).show();
+			}
 			put[form[i].name] = form[i].value;
 		}
 
@@ -126,8 +150,7 @@ $(document).ready(function(){
 			dataType: 'JSON',
 			success: function(data)
 			{
-				console.log(data);
-				console.log(data.error.active);
+
 				if(data.error.active!=undefined && data.error.active==false)
 				{
 					$('.top-right').notify({
@@ -150,7 +173,7 @@ $(document).ready(function(){
 
 	function refreshPlayers(data)
 	{
-		console.log(data);
+
 		var i = 0;
 		var j = 1;
 		var n = 0;
@@ -193,13 +216,20 @@ $(document).ready(function(){
 	    $('#players').html(html);
 	    
 	    $('.playersForm').on('submit',function(e){
-		console.log('submitted');
+	    var wut = $(this);
 		e.preventDefault();
-		console.log('got here');
-		var form = $(this).serializeArray();
+
+		var form = wut.serializeArray();
 		var put = {};
 		for(var i in form)
 		{
+			if(form[i].value=="")
+			{
+				$('.top-right').notify({
+					message: { text: 'Please make sure all players have a score' },
+					type: 'danger'
+				}).show();
+			}
 			put[form[i].name] = form[i].value;
 		}
 
@@ -211,8 +241,6 @@ $(document).ready(function(){
 			dataType: 'JSON',
 			success: function(data)
 			{
-				console.log(data);
-				console.log(data.error.active);
 				if(data.error.active!=undefined && data.error.active==false)
 				{
 					$('.top-right').notify({

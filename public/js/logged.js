@@ -1,6 +1,15 @@
 $(document).ready(function(){
 
+	if(localStorage['tournament'])
+	{
+		showNew();
+	}
+
 	$('#new').click(function(){
+		showNew();
+	});
+	function showNew()
+	{
 		$(this).hide();
 		$('#newTournament').show();
 		loadPlayers();
@@ -9,8 +18,7 @@ $(document).ready(function(){
 		{
 			$('#goTournament').show();
 		}
-	});
-
+	}
 	$('#addPlayer').click(function(e){
 		addPlayer(e);
 	});

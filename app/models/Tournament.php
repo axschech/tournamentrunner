@@ -12,8 +12,8 @@ class Tournament extends Eloquent {
 	{
 		$players = Player::where('tournament',$this->id)->get()->toArray();
 		 usort($players, function($a, $b){
-                    return ($a['order'] < $b['order']) ? -1 : 1;
-                });
+            return ($a['order'] < $b['order']) ? -1 : 1;
+        });
 		$this->players = $players;
 	}
 
@@ -101,9 +101,18 @@ class Tournament extends Eloquent {
 		$this->save();
 		
 		$retArray = $this->toArray();
-
+		usort($this->players, function($a, $b){
+            return ($a['order'] < $b['order']) ? -1 : 1;
+        });
 		$retArray['players'] = $this->players;
 		return $retArray;
+	}
+
+	public function tournamentDone($id="")
+	{
+		$this->isDone = 1;
+		$this->active = 0;
+		$this->save();
 	}
 }
 		

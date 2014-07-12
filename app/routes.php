@@ -39,6 +39,7 @@ Route::filter('no', function($route)
   	if(!empty($id))
   	{
   		$tournament = Tournament::find($id);
+      //done make done view?
   		if($tournament)
   		{
   			$user = $tournament->user;
