@@ -1,16 +1,12 @@
 $(document).ready(function(){
 
-	if(localStorage['tournament'])
-	{
-		showNew();
-	}
-
 	$('#new').click(function(){
 		showNew();
 	});
+
 	function showNew()
 	{
-		$(this).hide();
+		$('#new').hide();
 		$('#newTournament').show();
 		loadPlayers();
 		$('#playerList').show();

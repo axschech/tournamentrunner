@@ -4,11 +4,13 @@ class LoggedController extends BaseController {
 
 	public function getIndex()
 	{
+		exit;
 		if(Session::has('logged'))
 		{
 			$userid = Session::get('logged');
 
 			$res = User::find($userid)->get();
+			var_dump($res); exit;
 			$user = $res[0]->toArray();
 
 			$res = Tournament::where('user',$userid)->get();
@@ -21,11 +23,12 @@ class LoggedController extends BaseController {
 			}
 
 			// $res = Player::where('user',$userid)->get();
-
+			exit;
 			return View::make('logged', array("user"=>json_encode($user),'tournaments'=>json_encode($tournaments)));
 		}
 		else
 		{
+			exit;
 			return Redirect::to('/login');
 		}
 	}
