@@ -36,6 +36,7 @@ Route::filter('no', function($route)
 
   	$id = $route->getParameter('name');
   	$check = false;
+
   	if(!empty($id))
   	{
   		$tournament = Tournament::find($id);
@@ -48,6 +49,11 @@ Route::filter('no', function($route)
   				$check = true;
   			}
   		}
+      else
+      {
+          $message = "<h1>Tournament not found, <a href='/'>home</a>?</h1>";
+          return Response::make($message,404);
+      }
   	}
   	else
   	{
@@ -57,8 +63,15 @@ Route::filter('no', function($route)
   	if(!$check)
   	{
   		$message = "<h1>Not Authorized, go <a href='/'>home</a>?</h1>";
-		return Response::make($message,401);
+		  return Response::make($message,401);
   	}
+    
+    if(!empty($tournament) && $tournament->isDone==1 && Request::segment(3)!='done' && !Request::isMethod('delete'))
+    {
+
+        $url = 'tournament/'.$id.'/done';
+        return Redirect::to($url);
+    }
 
   	
 });
