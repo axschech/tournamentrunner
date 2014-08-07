@@ -25,6 +25,7 @@ class HomeController extends BaseController {
 
 		if(Session::has('logged'))
 		{
+			exit;
 			return Redirect::to('/');
 		}
 		else

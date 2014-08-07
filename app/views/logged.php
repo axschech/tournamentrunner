@@ -1,4 +1,5 @@
 <?php
+exit;
   $user = json_decode($user,true);
 ?>
 <!DOCTYPE html>
